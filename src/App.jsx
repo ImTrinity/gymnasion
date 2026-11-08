@@ -6,7 +6,7 @@ import {
 } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 
-export default function GymnasionApp() {
+export default function App() {
   const [activeTab, setActiveTab] = useState('workout');
   
   // Medidas iniciales
