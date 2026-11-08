@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { 
   Dumbbell, Ruler, Calendar as CalendarIcon, Timer, 
-  TrendingUp, Play, Pause, RotateCcw, Plus, Trash2, 
-  CheckCircle2, Lock, Unlock, ArrowRight, Activity, Award
+  TrendingUp, Play, Pause, CheckCircle2, Lock, 
+  ArrowRight, Activity, Award
 } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 
@@ -153,7 +153,6 @@ export default function App() {
     }
   ];
 
-  // Manejo de sets en rutinas
   const handleSetChange = (exId, setIdx, field, val) => {
     setActiveExercises(prev => {
       const exData = prev[exId] || {};
@@ -220,15 +219,13 @@ export default function App() {
     alert("¡Rutina guardada con éxito en tu calendario!");
   };
 
-  // Cuenta regresiva al 10 de marzo de 2027
   const targetDate = new Date('2027-03-10T00:00:00');
-  const today = new Date();
-  const diffTime = targetDate - today;
+  const todayDate = new Date();
+  const diffTime = targetDate - todayDate;
   const daysLeft = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
   return (
     <div className="min-h-screen bg-[#09090b] text-[#f4f4f5] flex justify-center font-['Manrope',sans-serif] select-none">
-      {/* Contenedor optimizado para Samsung Galaxy A55 / Móvil */}
       <div className="w-full max-w-md bg-[#09090b] min-h-screen flex flex-col relative shadow-2xl border-x border-[#1e1e2d]">
         
         {/* Header Superior */}
@@ -261,19 +258,19 @@ export default function App() {
                   </h2>
                   {routineState.isLocked && (
                     <span className="text-[10px] bg-red-950 text-red-300 px-2 py-0.5 rounded-full border border-red-800 flex items-center gap-1">
-                      <Lock className="w-3 h-3" /> Bloqueado hasta el lunes
+                      <Lock className="w-3 h-3" /> Bloqueado
                     </span>
                   )}
                 </div>
                 <p className="text-xs text-zinc-400">
-                  Completados: {routineState.completedDays.length} de {routines.length} rutinas de la semana.
+                  Completados: {routineState.completedDays.length} de {routines.length} rutinas.
                 </p>
                 {routineState.isLocked && (
                   <button 
                     onClick={() => setRoutineState({ completedDays: [], isLocked: false, lastResetWeek: null })}
                     className="mt-3 text-[11px] bg-[#27273a] hover:bg-[#3f3f5f] text-[#c084fc] px-3 py-1.5 rounded-xl font-semibold transition"
                   >
-                    Reiniciar Progreso Semanal (Manual)
+                    Reiniciar Progreso Semanal
                   </button>
                 )}
               </div>
@@ -289,7 +286,7 @@ export default function App() {
                         onClick={() => !routineState.isLocked && !isDone && setSelectedWorkoutId(routine.id)}
                         className={`p-4 rounded-2xl border transition flex items-center justify-between ${
                           isDone 
-                            ? 'bg-[#12121c]/50 border-emerald-900/50 opacity-7opath' 
+                            ? 'bg-[#12121c]/50 border-emerald-900/50 opacity-70' 
                             : routineState.isLocked 
                             ? 'bg-[#12121c]/40 border-zinc-800 opacity-50 cursor-not-allowed'
                             : 'bg-[#13131c] border-[#27273a] hover:border-[#c084fc] cursor-pointer shadow-md'
@@ -310,7 +307,6 @@ export default function App() {
                   })}
                 </div>
               ) : (
-                // Vista de Detalle de Rutina Activa
                 (() => {
                   const routine = routines.find(r => r.id === selectedWorkoutId);
                   return (
@@ -326,7 +322,6 @@ export default function App() {
                         <h3 className="font-bold text-base text-white">{routine.name}</h3>
                         <p className="text-xs text-zinc-400">{routine.target}</p>
 
-                        {/* Bloque Calentamiento 10 min */}
                         <div className="mt-3 p-3 bg-purple-950/20 border border-purple-900/40 rounded-xl flex items-center justify-between">
                           <div className="flex items-center gap-2">
                             <Timer className="w-4 h-4 text-[#c084fc]" />
@@ -340,7 +335,7 @@ export default function App() {
                         <div key={ex.id} className="bg-[#13131c] p-4 rounded-2xl border border-[#27273a] space-y-3">
                           <div className="flex justify-between items-center">
                             <h4 className="font-bold text-sm text-white">{ex.name}</h4>
-                            <span className="text-[10px] bg-[#27273a] px-2 py-0.5 rounded text-zinc-300">Meta: {ex.reps} reps</span>
+                            <span className="text-[10px] bg-[#27273a] px-2 py-0.5 rounded text-zinc-300">Meta: {ex.reps}</span>
                           </div>
 
                           <div className="space-y-2">
@@ -390,11 +385,10 @@ export default function App() {
                         </div>
                       ))}
 
-                      {/* Bloque Enfriamiento 10 min */}
                       <div className="p-3 bg-purple-950/20 border border-purple-900/40 rounded-xl flex items-center justify-between">
                         <div className="flex items-center gap-2">
                           <Timer className="w-4 h-4 text-[#c084fc]" />
-                          <span className="text-xs font-bold text-purple-200">Enfriamiento y Estiramientos</span>
+                          <span className="text-xs font-bold text-purple-200">Enfriamiento</span>
                         </div>
                         <span className="text-xs font-extrabold text-[#c084fc]">10 min</span>
                       </div>
@@ -475,7 +469,6 @@ export default function App() {
                 </button>
               </div>
 
-              {/* Gráfica de Evolución */}
               <div className="bg-[#13131c] p-4 rounded-2xl border border-[#27273a]">
                 <h4 className="font-bold text-xs text-zinc-300 mb-3">Evolución de Cadera y Peso</h4>
                 <div className="h-40 w-full">
@@ -564,7 +557,6 @@ export default function App() {
                 <h3 className="font-bold text-sm text-white flex items-center gap-2 mb-3">
                   <CalendarIcon className="w-4 h-4 text-[#c084fc]" /> Calendario de Entrenamientos
                 </h3>
-                <p className="text-xs text-zinc-400 mb-4">Fechas registradas con actividad completada:</p>
                 <div className="space-y-2">
                   {Object.keys(workoutLogs).length === 0 ? (
                     <p className="text-xs text-zinc-500 italic">No hay entrenamientos guardados todavía.</p>
@@ -592,13 +584,6 @@ export default function App() {
                     <button onClick={() => setSelectedCalendarDate(null)} className="text-[10px] text-zinc-400 hover:text-white">Cerrar</button>
                   </div>
                   <p className="text-xs text-[#c084fc] font-semibold">{workoutLogs[selectedCalendarDate]?.routineName}</p>
-                  <div className="text-xs text-zinc-300 space-y-1">
-                    {Object.entries(workoutLogs[selectedCalendarDate]?.data || {}).map(([exId, info]) => (
-                      <div key={exId} className="border-t border-[#27273a] pt-1 mt-1">
-                        <span className="text-[11px] text-zinc-400 block">Ejercicio ID: {exId}</span>
-                      </div>
-                    ))}
-                  </div>
                 </div>
               )}
             </div>
@@ -608,7 +593,7 @@ export default function App() {
 
         {/* Barra de Temporizador de Descanso Flotante (120s) */}
         {timerActive && (
-          <div className="absolute bottom-20 left-4 right-4 bg-[#1b1b2f] border border-[#c084fc]/40 p-3 rounded-2xl shadow-xl flex items-center justify-between z-40 animate-bounce-short">
+          <div className="absolute bottom-20 left-4 right-4 bg-[#1b1b2f] border border-[#c084fc]/40 p-3 rounded-2xl shadow-xl flex items-center justify-between z-40">
             <div className="flex items-center gap-2">
               <Timer className="w-5 h-5 text-[#c084fc]" />
               <div>
